@@ -56,7 +56,7 @@ public class Noise {
      */
 
 
-    public float get(float x, float y) {
+    public float sample(float x, float y) {
 
         /*  P = (x, y)
          *
@@ -77,7 +77,7 @@ public class Noise {
 
         // Direction vectors of (P) w.r.t (A) ranges from 0 - 1 (for both x and y)
         float local_x = x - x0;
-        float local_y = x - x0;
+        float local_y = y - y0;
 
         // Direction vectors of (P) w.r.t the cornors
         vec2 d00 = new vec2(local_x    , local_y    ); // AP
@@ -149,6 +149,22 @@ public class Noise {
     // Linear interpolation
     public static float lerp(float a, float b, float t) {
         return (b - a) * t + a;
+    }
+
+    // ----------------------------------------------------------------
+    // Setters
+    // ----------------------------------------------------------------
+
+    public void rotateGradientVectors(float delta_angle) {
+
+        float sin_delta_angle = (float) Math.sin(delta_angle);
+        float cos_delta_angle = (float) Math.cos(delta_angle);
+
+        for (int x = 0; x <= gridWidth; x++) {
+            for (int y = 0; y <= gridHeight; y++) {
+                vec2.rotate(gradients[x][y], sin_delta_angle, cos_delta_angle);
+            }
+        }
     }
 
     // ----------------------------------------------------------------
